@@ -9,24 +9,21 @@ func main() {
 	//Generate the events
 	events := generateSeedData()
 	//Print the seed data
-	printGeneratedData(events)
+	//printGeneratedData(events)
 
-}
+	//Get the user coordinates
+	usercoordinates := getCoordinatesFromUser()
+	fmt.Printf("Closest Events to (%g,%g):\n", usercoordinates.x, usercoordinates.y)
 
-//Function used to print the generated data
-func printGeneratedData(events []Event) {
-	fmt.Println("Number of events:", len(events))
-	fmt.Println("")
-	//Loop each event
-	for _, event := range events {
-		fmt.Println("Event id:", event.eventID)
-		fmt.Println("Event location:(", event.location.x, ";", event.location.y, ")")
-		fmt.Println("Number of tickets in this event:", len(event.tickets))
-		//Loop the tickets in the events
-		for _, ticket := range event.tickets {
-			fmt.Println("\tTicket id:", ticket.ticketID)
-			fmt.Println("\tTicket price:", ticket.price)
-		}
-		fmt.Println("")
-	}
+	//Calculate the distances between the point and all of the events
+	distancePool := calculateDistancesBetweenEventsAndPoint(usercoordinates, events)
+	//Sort the distances and get only the required amount of them
+	sortedDistancePool := sortEventDistances(distancePool)[:NUMBEROFRESULTS]
+
+	//Get the sorted events with the distances
+	closestEvents := mergeEventAndDistance(events, sortedDistancePool)
+
+	//Print the result
+	printEvents(closestEvents)
+
 }
