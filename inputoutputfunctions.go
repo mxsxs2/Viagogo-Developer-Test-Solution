@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 //Function used to print the sorted event
@@ -53,21 +54,45 @@ func readCoordinates() Coordinates {
 		//Read the preformatted coordinates
 		_, err := fmt.Fscanf(stdin, "%g,%g\n", &coordiates.x, &coordiates.y)
 		//If there was no error and the coordinates are within the world boundaries then break the loop
-		if err == nil && int(coordiates.x) >= COORDMIN && int(coordiates.x) <= COORDMAX && int(coordiates.y) >= COORDMIN && int(coordiates.y) <= COORDMAX {
-			break
+		if err == nil {
+			if int(coordiates.x) >= COORDMIN && int(coordiates.x) <= COORDMAX && int(coordiates.y) >= COORDMIN && int(coordiates.y) <= COORDMAX {
+				break
+			} else {
+				//If there was an error then let the user know about it
+				fmt.Println("Invalid input. Please enter the coordinates again between", COORDMIN, "and", COORDMAX, ". for example: 4,2\n")
+			}
+		} else {
+			//Read until the end of the line
+			stdin.ReadString('\n')
+			//If there was an error then let the user know about it
+			fmt.Println("Invalid input. Please enter the coordinates again. For example: 4,2\n")
 		}
-		//Read until the end of the line
-		stdin.ReadString('\n')
-		//If there was an error then let the user know about it
-		fmt.Println("Invalid input. Please enter the coordinates again again:")
 	}
 	//Return the coordinates
 	return coordiates
 }
 
+//Function used to find a flag in command line arguments
+func isFlagOn(flag string) bool {
+	//Check if there is any argument supplied
+	if len(os.Args) > 1 {
+		//Loop the arguments
+		for _, arg := range os.Args {
+			//If the flag was found then return true
+			if strings.Compare(arg, flag) == 0 {
+				return true
+			}
+		}
+	}
+	//Return false if there was no result
+	return false
+}
+
 //Function used to print the generated data
 func printGeneratedData(events []Event) {
-	fmt.Println("Number of events:", len(events))
+	fmt.Println("")
+	fmt.Println("")
+	fmt.Println("Number of generated events:", len(events))
 	fmt.Println("")
 	//Loop each event
 	for _, event := range events {

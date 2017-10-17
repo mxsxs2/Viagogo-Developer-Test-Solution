@@ -8,8 +8,6 @@ import (
 func main() {
 	//Generate the events
 	events := generateSeedData()
-	//Print the seed data
-	//printGeneratedData(events)
 
 	//Get the user coordinates
 	usercoordinates := getCoordinatesFromUser()
@@ -25,5 +23,11 @@ func main() {
 
 	//Print the result
 	printEvents(closestEvents)
+
+	//if the -printdata argument is present then print the generated data
+	if isFlagOn("-printdata") {
+		//Print the seed data
+		printGeneratedData(events)
+	}
 
 }
