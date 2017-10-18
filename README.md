@@ -29,6 +29,29 @@ The randomly generated data can be written onto the command line console with th
 ```
 ./Viagogo-Developer-Test-Solution.exe -printdata
 ```
+
+## Extendability
+### How might you change your program if you needed to support multiple events at the same location?
+The application can be changed to support multiple events at the same location. The ```eventgenerator.go``` file has a function call at line 53:
+```
+//Generate the unique location
+location: generateRandomCoordinates(true, eventPool),
+```
+
+If the true is changed to false, the generator will not check for unique coordinates,so multiple events could occour at the same location.
+The rest of the application is ready for multiple events at the same location.
+### How would you change your program if you were working with a much larger world size?
+In order to support larger world size, the ```config.go``` file has to be changed at line 8 and 11:
+```
+//The highest coordinate for both X and Y
+const COORDMAX = 10
+
+//The lowest coordinate for both X and Y
+const COORDMIN = -10
+```
+The application will be able to handle the larger world without any errors, thanks to the efficient sorting algorithms. However if there are more than a few thousands of events are available, the app should be modified to store the events in a database, rather than in memory.
+
+
 ## Assumptions
 * As the documentation did not clarify how many events and tickects should I have, I decided to generate random amount of them, so every time the app runs it generates completely different amunt of events and tickets
 * The maximum and miminum were given but was not specified if the have to be whole numbers or floating point numbers. I used floating point numbers as in a real world scenarion, therefore when the distance is shown it is shown as a floating point number with a precision of two.
